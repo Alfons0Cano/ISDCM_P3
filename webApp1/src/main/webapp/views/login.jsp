@@ -12,47 +12,87 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Iniciar sesión - VideoWeb</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
     </head>
-    <body>
-        <div class="container mt-5">
+    <body class="login-page">
+        <!-- Intro logo that will animate -->
+        <div class="intro-logo">
+            <i class="bi bi-play-circle-fill"></i>
+        </div>
+        
+        <div class="container login-container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="card">
                         <div class="card-header text-center">
-                            <h3>Iniciar sesión</h3>
+                            <h3>VIDEOWEB</h3>
                         </div>
                         <div class="card-body">
+                            <h5 class="text-center mb-4">Iniciar sesión en su cuenta</h5>
+                            
                             <% if(request.getAttribute("error") != null) { %>
                                 <div class="alert alert-danger">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     <%= request.getAttribute("error") %>
                                 </div>
                             <% } %>
                             <% if(request.getAttribute("message") != null) { %>
                                 <div class="alert alert-success">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
                                     <%= request.getAttribute("message") %>
                                 </div>
                             <% } %>
+                            
                             <form action="${pageContext.request.contextPath}/usuarios/login" method="post">
-                                <div class="mb-3">
+                                <div class="mb-4">
                                     <label for="username" class="form-label">Nombre de usuario</label>
-                                    <input type="text" class="form-control" id="username" name="username" required>
+                                    <div class="input-group">
+                                        <span class="input-icon"><i class="bi bi-person-fill"></i></span>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario" required>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-4">
                                     <label for="password" class="form-label">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <div class="input-group">
+                                        <span class="input-icon"><i class="bi bi-lock-fill"></i></span>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                                    </div>
                                 </div>
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                                    </button>
                                 </div>
                             </form>
-                            <div class="mt-3 text-center">
+                            <div class="mt-4 text-center register-link">
                                 <p>¿No tienes una cuenta? <a href="${pageContext.request.contextPath}/usuarios/registro">Regístrate aquí</a></p>
                             </div>
                         </div>
                     </div>
+                    <div class="footer">
+                        <small>&copy; 2025 VideoWeb. Todos los derechos reservados.</small>
+                    </div>
                 </div>
             </div>
         </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Animation sequence
+            document.addEventListener('DOMContentLoaded', function() {
+                // Wait a moment before starting the animation
+                setTimeout(function() {
+                    // Move the logo to the top
+                    document.querySelector('.intro-logo').classList.add('animated');
+                    
+                    // After the logo moves up, show the login form
+                    setTimeout(function() {
+                        document.querySelector('.login-container').classList.add('animated');
+                    }, 600);
+                }, 800);
+            });
+        </script>
     </body>
 </html>
