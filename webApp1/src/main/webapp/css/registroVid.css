@@ -1,0 +1,115 @@
+/* Override body styles for form pages */
+body.form-page {
+    display: block;
+    background: #f5f7fa;
+    padding-bottom: 2rem;
+}
+
+/* Page header */
+.page-header {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #3a7bd5;
+}
+
+.page-header h3 {
+    margin: 0;
+    color: #3a7bd5;
+    font-weight: 600;
+}
+
+/* Form specific styles */
+.form-card {
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.form-section {
+    position: relative;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed rgba(58, 123, 213, 0.2);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+}
+
+.form-section h5 {
+    color: #3a7bd5;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Adjust input padding for form-select and textarea */
+.form-select {
+    border-radius: 10px;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    border: 1px solid #e1e5eb;
+    background-color: #f9fafc;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus {
+    box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15);
+    border-color: #3a7bd5;
+    background-color: #fff;
+}
+
+textarea.form-control {
+    padding-top: 0.8rem;
+    min-height: 120px;
+}
+
+/* Input icon adjustments for select and textarea */
+.input-icon-static {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+/* Button animation */
+.btn-submit {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-submit:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.btn-submit:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}

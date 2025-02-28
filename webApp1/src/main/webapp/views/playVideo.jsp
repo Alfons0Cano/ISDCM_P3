@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     </head>
     <body>
-        <jsp:include page="/WEB-INF/partials/navbar.jsp" />
+        <jsp:include page="/partials/navbar.jsp" />
         
         <div class="container mt-4">
             <div class="row">
