@@ -103,8 +103,16 @@ public class ServletListadoVid extends HttpServlet {
             // Increment reproductions
             videoDAO.incrementarReproduccion(videoId);
             
-            // Set video as request attribute
+            // Get all videos for recommendations (excluding current video)
+            List<Video> allVideos = videoDAO.findAll();
+            List<Video> recommendations = allVideos.stream()
+                    .filter(v -> v.getId() != videoId)
+                    .limit(5)  // Limitamos a 5 recomendaciones
+                    .toList();
+            
+            // Set video and recommendations as request attributes
             request.setAttribute("video", video);
+            request.setAttribute("recommendations", recommendations);
             
             // Forward to JSP
             request.getRequestDispatcher("/views/playVideo.jsp").forward(request, response);

@@ -1,0 +1,546 @@
+/* 
+ * playVid.css - YouTube-like styling for video player page
+ * Created on: March 2025
+ */
+
+/* General Page Layout */
+body {
+    background-color: #0f0f0f;
+    color: #f1f1f1;
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: block;
+    line-height: 1.5;
+}
+
+.container {
+    width: 100%;
+    max-width: 1800px;
+    padding: 0 24px;
+}
+
+/* Navbar customization */
+.navbar {
+    padding: 0;
+    height: 56px;
+    background-color: #0f0f0f !important;
+    border-bottom: 1px solid #303030;
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+.nav-link:hover {
+    color: #aaa !important;
+}
+
+/* Video Player Section */
+.video-container {
+    position: relative;
+    background: #000;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    margin-top: 24px;
+    aspect-ratio: 16/9;
+}
+
+.video-player {
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 0;
+    object-fit: contain;
+}
+
+video:focus {
+    outline: none;
+}
+
+/* Video controls custom styling */
+video::-webkit-media-controls-panel {
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+}
+
+video::-webkit-media-controls-play-button {
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+/* Video Information Section */
+.video-info-container {
+    padding: 20px 0;
+    border-bottom: 1px solid #272727;
+}
+
+.video-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: white;
+    line-height: 28px;
+}
+
+.video-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.video-views-date {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.video-views-date span:first-child::after {
+    content: "•";
+    margin-left: 6px;
+}
+
+.meta-divider {
+    height: 1px;
+    background-color: #272727;
+    margin: 16px 0;
+}
+
+/* Like and Share buttons */
+.video-actions {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    background-color: #272727;
+    border: none;
+    color: #f1f1f1;
+    border-radius: 18px;
+    padding: 6px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #3f3f3f;
+}
+
+.action-button i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Channel/Author Section */
+.video-author {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
+    padding: 16px 0;
+    border-top: 1px solid #272727;
+    border-bottom: 1px solid #272727;
+}
+
+.author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #065fd4;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.author-avatar i {
+    font-size: 24px;
+    color: white;
+}
+
+.author-info {
+    flex-grow: 1;
+}
+
+.author-name {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.author-name::after {
+    content: "✓";
+    display: inline-block;
+    font-size: 12px;
+    color: white;
+    background-color: #888;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    line-height: 14px;
+    margin-left: 6px;
+}
+
+.subscribers {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.subscribe-button {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 18px;
+    padding: 10px 16px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.subscribe-button:hover {
+    background-color: #e5e5e5;
+}
+
+/* Video Description */
+.video-description {
+    background-color: #272727;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #f1f1f1;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.video-description:hover {
+    background-color: #3f3f3f;
+}
+
+.video-description p {
+    margin-bottom: 12px;
+    white-space: pre-line;
+}
+
+/* Video Details Section */
+.video-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    font-size: 13px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+}
+
+.detail-item i {
+    margin-right: 8px;
+    color: #aaa;
+}
+
+.detail-label {
+    margin-right: 5px;
+    color: #aaa;
+    font-weight: 500;
+}
+
+/* Comments section styling */
+.comments-section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #272727;
+}
+
+.comments-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.comments-count {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    margin-right: 32px;
+}
+
+.sort-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.comment-form {
+    display: flex;
+    margin-bottom: 32px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #065fd4;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-avatar i {
+    font-size: 20px;
+    color: white;
+}
+
+.comment-input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px solid #272727;
+    background-color: transparent;
+    color: white;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-bottom: 2px solid #3ea6ff;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent;
+    color: #3ea6ff;
+    border: none;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    color: #62b5ff;
+}
+
+.back-button i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Alert Messages */
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    color: #f1c40f;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+}
+
+/* Card Redesign for YouTube Style */
+.card {
+    background-color: #0f0f0f;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: none;
+    padding: 20px 0 0;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* Sidebar video recommendations */
+.recommendations {
+    margin-top: 24px;
+}
+
+.recommendation-item {
+    display: flex;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+}
+
+.recommendation-item:hover {
+    background-color: #272727;
+}
+
+.recommendation-thumbnail {
+    width: 168px;
+    height: 94px;
+    border-radius: 8px;
+    background-color: #1f1f1f;
+    overflow: hidden;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.recommendation-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recommendation-info {
+    flex-grow: 1;
+}
+
+.recommendation-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: white;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.recommendation-channel {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 4px;
+}
+
+.recommendation-metadata {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    gap: 4px;
+}
+
+.recommendation-metadata span:first-child::after {
+    content: "•";
+    margin-left: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .recommendation-thumbnail {
+        width: 140px;
+        height: 78px;
+    }
+}
+
+@media (max-width: 991px) {
+    .recommendations {
+        margin-top: 36px;
+    }
+    
+    .recommendation-item {
+        margin-bottom: 16px;
+    }
+    
+    .recommendation-thumbnail {
+        width: 168px;
+        height: 94px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .video-container {
+        margin-left: -16px;
+        margin-right: -16px;
+        margin-top: 16px;
+    }
+    
+    .video-info-container {
+        padding: 16px;
+    }
+    
+    .video-title {
+        font-size: 18px;
+    }
+    
+    .video-author {
+        flex-wrap: wrap;
+    }
+    
+    .subscribe-button {
+        margin-left: 0;
+        margin-top: 12px;
+    }
+    
+    .recommendation-thumbnail {
+        width: 140px;
+        height: 78px;
+    }
+}
+
+/* Override Bootstrap */
+.btn-outline-primary {
+    color: #3ea6ff;
+    border-color: #3ea6ff;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(62, 166, 255, 0.1);
+    color: #3ea6ff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f0f0f; 
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+/* Override Bootstrap Container for Full Width Experience */
+@media (min-width: 1200px) {
+    .container.video-page-container {
+        max-width: 90%;
+    }
+}
