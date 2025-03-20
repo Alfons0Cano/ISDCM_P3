@@ -11,7 +11,8 @@ import java.sql.Date;
 public class Video implements Serializable {
     private int id;
     private String titulo;
-    private int autor;
+    private String autor; // Cambiado de int a String para almacenar el nombre de usuario
+    private int autorId;  // Mantenemos el ID como referencia para la base de datos
     private Date fechaCreacion;
     private Time duracion;
     private int reproducciones;
@@ -25,10 +26,11 @@ public class Video implements Serializable {
     }
 
     // Constructor with all fields except ID and reproducciones (which has default value)
-    public Video(String titulo, int autor, Date fechaCreacion, Time duracion, 
+    public Video(String titulo, String autor, int autorId, Date fechaCreacion, Time duracion, 
                 String descripcion, String formato, String url) {
         this.titulo = titulo;
         this.autor = autor;
+        this.autorId = autorId;
         this.fechaCreacion = fechaCreacion;
         this.duracion = duracion;
         this.reproducciones = 0;
@@ -38,14 +40,45 @@ public class Video implements Serializable {
     }
 
     // Constructor with all fields
-    public Video(int id, String titulo, int autor, Date fechaCreacion, Time duracion,
+    public Video(int id, String titulo, String autor, int autorId, Date fechaCreacion, Time duracion,
                 int reproducciones, String descripcion, String formato, String url) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
+        this.autorId = autorId;
         this.fechaCreacion = fechaCreacion;
         this.duracion = duracion;
         this.reproducciones = reproducciones;
+        this.descripcion = descripcion;
+        this.formato = formato;
+        this.url = url;
+    }
+
+    // Constructor compatible con la versión anterior para mantener compatibilidad
+    // con el código existente temporalmente
+    public Video(int id, String titulo, int autorId, Date fechaCreacion, Time duracion,
+                int reproducciones, String descripcion, String formato, String url) {
+        this.id = id;
+        this.titulo = titulo;
+        this.autorId = autorId;
+        this.autor = "Usuario " + autorId; // Valor predeterminado
+        this.fechaCreacion = fechaCreacion;
+        this.duracion = duracion;
+        this.reproducciones = reproducciones;
+        this.descripcion = descripcion;
+        this.formato = formato;
+        this.url = url;
+    }
+
+    // Constructor compatible con la versión anterior para mantener compatibilidad
+    public Video(String titulo, int autorId, Date fechaCreacion, Time duracion, 
+                String descripcion, String formato, String url) {
+        this.titulo = titulo;
+        this.autorId = autorId;
+        this.autor = "Usuario " + autorId; // Valor predeterminado
+        this.fechaCreacion = fechaCreacion;
+        this.duracion = duracion;
+        this.reproducciones = 0;
         this.descripcion = descripcion;
         this.formato = formato;
         this.url = url;
@@ -68,12 +101,20 @@ public class Video implements Serializable {
         this.titulo = titulo;
     }
 
-    public int getAutor() {
+    public String getAutor() {
         return autor;
     }
 
-    public void setAutor(int autor) {
+    public void setAutor(String autor) {
         this.autor = autor;
+    }
+    
+    public int getAutorId() {
+        return autorId;
+    }
+
+    public void setAutorId(int autorId) {
+        this.autorId = autorId;
     }
 
     public Date getFechaCreacion() {
@@ -133,7 +174,8 @@ public class Video implements Serializable {
         return "Video{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", autor=" + autor +
+                ", autor='" + autor + '\'' +
+                ", autorId=" + autorId +
                 ", fechaCreacion=" + fechaCreacion +
                 ", duracion=" + duracion +
                 ", reproducciones=" + reproducciones +
