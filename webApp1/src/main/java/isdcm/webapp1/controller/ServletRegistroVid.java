@@ -1,8 +1,8 @@
 package isdcm.webapp1.controller;
 
 import isdcm.webapp1.dao.VideoDAO;
+import isdcm.webapp1.model.Usuario;
 import isdcm.webapp1.model.Video;
-import isdcm.webapp1.model.VideoMetadata;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +21,6 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -37,14 +36,12 @@ import java.util.logging.Logger;
 public class ServletRegistroVid extends HttpServlet {
     
     private static final Logger logger = Logger.getLogger(ServletRegistroVid.class.getName());
-    
     private final VideoDAO videoDAO = new VideoDAO();
     private static final String UPLOAD_DIRECTORY = "videos";
     
     @Override
     public void init() throws ServletException {
         super.init();
-        // Create upload directory if it doesn't exist
         String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
@@ -65,8 +62,9 @@ public class ServletRegistroVid extends HttpServlet {
             return;
         }
         
+        // En lugar de convertir directamente, simplemente usamos toString() para el registro
         logger.log(Level.INFO, "Mostrando formulario de registro de video para usuario: {0}", 
-                session.getAttribute("usuario"));
+                session.getAttribute("usuario").toString());
         request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
     }
     
@@ -83,15 +81,17 @@ public class ServletRegistroVid extends HttpServlet {
                 return;
             }
             
-            // Get user information from session
-            int userId = (Integer) session.getAttribute("userId");
-            String username = (String) session.getAttribute("usuario");
+            // Get user information from session - ahora manejando el usuario como objeto
+            Usuario usuarioObj = (Usuario) session.getAttribute("usuario");
+            int userId = usuarioObj.getId();
+            String username = usuarioObj.getUsername();
             
             logger.log(Level.INFO, "Procesando subida de video para usuario: {0}", username);
             
             // Get form data
             String titulo = request.getParameter("titulo");
             String descripcion = request.getParameter("descripcion");
+            String videoDurationStr = request.getParameter("videoDuration");
             
             // Get uploaded file
             Part filePart = request.getPart("videoFile");
@@ -125,10 +125,7 @@ public class ServletRegistroVid extends HttpServlet {
             
             logger.log(Level.INFO, "Iniciando procesamiento del video: {0}", titulo);
             
-            // Extract metadata from video file entirely on the server side
-            VideoMetadata metadata = extractVideoMetadata(filePart);
-            
-            // Process and save the video file
+            // Process and save the video file first to get accurate metadata
             String fileName = getSubmittedFileName(filePart);
             String fileExtension = getFileExtension(fileName);
             
@@ -142,26 +139,37 @@ public class ServletRegistroVid extends HttpServlet {
                 uploadDir.mkdirs();
             }
             
-            logger.log(Level.INFO, "Guardando video en: {0}", uploadPath + File.separator + uniqueFileName);
+            // Full path to the saved file
+            String fullFilePath = uploadPath + File.separator + uniqueFileName;
+            logger.log(Level.INFO, "Guardando video en: {0}", fullFilePath);
             
             // Save file to server
-            Path filePath = Paths.get(uploadPath + File.separator + uniqueFileName);
+            Path filePath = Paths.get(fullFilePath);
             try (InputStream inputStream = filePart.getInputStream()) {
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             }
             
+            // Now that the file is saved, extract metadata
+            Date creationDate = new Date(new File(fullFilePath).lastModified());
+            
+            // Convert duration from seconds to Time
+            int durationSeconds = Integer.parseInt(videoDurationStr);
+            int hours = durationSeconds / 3600;
+            int minutes = (durationSeconds % 3600) / 60;
+            int seconds = durationSeconds % 60;
+            Time duration = Time.valueOf(LocalTime.of(hours, minutes, seconds));
+            
             // Generate URL for the video (relative to the application context)
             String videoUrl = request.getContextPath() + "/" + UPLOAD_DIRECTORY + "/" + uniqueFileName;
             
-            // Create new video with the extracted metadata
-            // Ahora estamos usando el constructor que solo acepta ID del autor
+            // Create new video object
             Video video = new Video(
                     titulo,
-                    userId,    // ID del usuario como autor
-                    metadata.getCreationDate(), 
-                    metadata.getDuration(),
-                    descripcion, 
-                    metadata.getFormat(), 
+                    userId,
+                    creationDate,
+                    duration,
+                    descripcion,
+                    fileExtension,
                     videoUrl
             );
             
@@ -183,27 +191,6 @@ public class ServletRegistroVid extends HttpServlet {
         }
     }
     
-    /**
-     * Extracts all metadata from the video file
-     * In a production environment, this would use a proper video processing library
-     */
-    private VideoMetadata extractVideoMetadata(Part filePart) {
-        // Get current date for creation date
-        Date creationDate = Date.valueOf(LocalDate.now());
-        
-        // Extract duration based on file size (simulated)
-        Time duration = extractVideoDuration(filePart);
-        
-        // Extract format from filename
-        String fileName = getSubmittedFileName(filePart);
-        String format = getFileExtension(fileName);
-        
-        logger.log(Level.INFO, "Metadatos extraídos - Formato: {0}, Duración: {1}, Fecha: {2}", 
-                new Object[]{format, duration, creationDate});
-        
-        return new VideoMetadata(creationDate, duration, format);
-    }
-    
     private String getSubmittedFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         if (contentDisposition != null) {
@@ -222,24 +209,5 @@ public class ServletRegistroVid extends HttpServlet {
             return fileName.substring(dotIndex + 1).toLowerCase();
         }
         return "mp4"; // Default extension
-    }
-    
-    private Time extractVideoDuration(Part filePart) {
-        // In a real application, you'd use a library like Xuggler, ffmpeg, or MediaInfo
-        // to extract the actual duration from the video file
-        
-        // Here we're simulating it based on file size
-        // 1MB ~ 10 seconds (just a rough approximation)
-        long fileSizeInMB = filePart.getSize() / (1024 * 1024);
-        int seconds = (int) (fileSizeInMB * 10);
-        
-        // Ensure at least 5 seconds
-        if (seconds < 5) seconds = 5;
-        
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-        int remainingSeconds = seconds % 60;
-        
-        return Time.valueOf(LocalTime.of(hours, minutes, remainingSeconds));
     }
 }

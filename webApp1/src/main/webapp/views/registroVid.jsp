@@ -140,8 +140,8 @@
                                     </div>
                                     <!-- El resto de los campos serán completados automáticamente -->
                                     <input type="hidden" id="automaticFecha" name="automaticFecha" value="true">
-                                    <input type="hidden" id="automaticDuracion" name="automaticDuracion" value="true">
-                                    <input type="hidden" id="automaticFormato" name="automaticFormato" value="true">
+                                    <input type="hidden" id="videoDuration" name="videoDuration" value="">
+                                    <input type="hidden" id="videoFormat" name="videoFormat" value="">
                                 </div>
                                 
                                 <div class="d-grid gap-2 mt-4">
@@ -204,11 +204,36 @@
                         return;
                     }
                     
-                    uploadPrompt.style.display = 'none';
-                    fileInfoContainer.style.display = 'block';
-                    filenameText.textContent = file.name;
-                    filesizeText.textContent = formatFileSize(file.size);
-                    updateSubmitButtonState();
+                    // Create URL for the video file
+                    const videoURL = URL.createObjectURL(file);
+                    
+                    // Create video element to load metadata
+                    const video = document.createElement('video');
+                    video.preload = 'metadata';
+                    
+                    // Set up event handlers
+                    video.onloadedmetadata = function() {
+                        const durationSeconds = Math.round(video.duration);
+                        document.getElementById('videoDuration').value = durationSeconds;
+                        
+                        // Update UI
+                        uploadPrompt.style.display = 'none';
+                        fileInfoContainer.style.display = 'block';
+                        filenameText.textContent = file.name;
+                        filesizeText.textContent = formatFileSize(file.size);
+                        updateSubmitButtonState();
+                        
+                        // Clean up
+                        URL.revokeObjectURL(videoURL);
+                    };
+                    
+                    video.onerror = function() {
+                        URL.revokeObjectURL(videoURL);
+                        showAlert('Error al leer el video. Por favor, intente con otro archivo.');
+                    };
+                    
+                    // Start loading the video
+                    video.src = videoURL;
                 }
                 
                 function showAlert(message, type = 'danger') {
