@@ -38,16 +38,24 @@ public class ServletRegistroVid extends HttpServlet {
     private static final Logger logger = Logger.getLogger(ServletRegistroVid.class.getName());
     private final VideoDAO videoDAO = new VideoDAO();
     private static final String UPLOAD_DIRECTORY = "videos";
+    private String uploadPath;
     
     @Override
     public void init() throws ServletException {
         super.init();
-        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+        // Obtener la ruta real del directorio de despliegue
+        uploadPath = getServletContext().getRealPath("/") + UPLOAD_DIRECTORY;
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-            logger.log(Level.INFO, "Directorio de videos creado: {0}", uploadPath);
+            boolean created = uploadDir.mkdirs();
+            if (created) {
+                logger.log(Level.INFO, "Directorio de videos creado exitosamente en: {0}", uploadPath);
+            } else {
+                logger.log(Level.SEVERE, "No se pudo crear el directorio de videos en: {0}", uploadPath);
+                throw new ServletException("No se pudo crear el directorio de videos");
+            }
         }
+        logger.log(Level.INFO, "Usando directorio de videos: {0}", uploadPath);
     }
     
     @Override
@@ -132,16 +140,18 @@ public class ServletRegistroVid extends HttpServlet {
             // Generate unique filename to avoid conflicts
             String uniqueFileName = username + "_" + UUID.randomUUID().toString() + "." + fileExtension;
             
-            // Create the upload directory path
-            String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            
-            // Full path to the saved file
+            // Usar la ruta completa almacenada durante la inicialización
             String fullFilePath = uploadPath + File.separator + uniqueFileName;
             logger.log(Level.INFO, "Guardando video en: {0}", fullFilePath);
+            
+            // Asegurarse de que el directorio existe antes de guardar
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                boolean created = uploadDir.mkdirs();
+                if (!created) {
+                    throw new IOException("No se pudo crear el directorio para guardar el video");
+                }
+            }
             
             // Save file to server
             Path filePath = Paths.get(fullFilePath);
@@ -159,7 +169,7 @@ public class ServletRegistroVid extends HttpServlet {
             int seconds = durationSeconds % 60;
             Time duration = Time.valueOf(LocalTime.of(hours, minutes, seconds));
             
-            // Generate URL for the video (relative to the application context)
+            // Actualizar la URL del video para que use la ruta relativa correcta
             String videoUrl = request.getContextPath() + "/" + UPLOAD_DIRECTORY + "/" + uniqueFileName;
             
             // Create new video object
