@@ -231,79 +231,11 @@ body.auth-page {
     margin-top: 0.5rem;
 }
 
-/* Navbar Styles */
-.navbar {
-    background-color: #0f0f0f !important;
-    border-bottom: 1px solid #272727;
-    padding: 0;
-    height: 56px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
-
-.navbar-brand {
-    font-family: 'Roboto', sans-serif;
-    font-size: 20px;
-    padding: 18px 14px;
-    margin: 0;
-}
-
-.navbar .nav-link {
-    color: #f1f1f1 !important;
-    padding: 0 20px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    transition: background-color 0.2s;
-}
-
-.navbar .nav-link:hover {
-    background-color: #272727;
-}
-
-.navbar .nav-link i {
-    font-size: 20px;
-    margin-right: 8px;
-}
-
-.navbar .dropdown-menu {
-    background-color: #282828;
-    border: 1px solid #373737;
-    margin-top: 8px;
-    border-radius: 12px;
-    padding: 8px 0;
-}
-
-.navbar .dropdown-item {
-    color: #f1f1f1;
-    padding: 8px 16px;
-    font-size: 14px;
-}
-
-.navbar .dropdown-item:hover {
-    background-color: #373737;
-}
-
-.navbar .dropdown-item i {
-    margin-right: 8px;
-}
-
-.navbar-toggler {
-    border: none;
-    padding: 0 16px;
-    height: 56px;
-}
-
-.navbar-toggler:focus {
-    box-shadow: none;
-}
-
-/* Dashboard body style */
-body.dashboard {
-    padding-top: 56px; /* Altura del navbar */
+/* Standard body padding for all pages with navbar */
+body.dashboard,
+body.form-page,
+body.video-page {
+    padding-top: 56px; /* Adjusted to exactly match navbar height */
 }
 
 /* Links in dark theme */

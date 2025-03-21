@@ -59,25 +59,6 @@
     color: #ddd;
 }
 
-/* Ajuste para el dropdown del navbar */
-.navbar-nav .dropdown-menu {
-    background-color: #282828;
-    border: 1px solid #373737;
-}
-
-.navbar-nav .dropdown-item {
-    color: #f1f1f1 !important;
-}
-
-.navbar-nav .dropdown-item:hover {
-    background-color: #373737;
-    color: #ffffff !important;
-}
-
-.navbar-nav .dropdown-item i {
-    margin-right: 8px;
-}
-
 /* Asegurarse que los demás elementos no interfieren */
 .login-page .footer {
     margin-top: 15px;

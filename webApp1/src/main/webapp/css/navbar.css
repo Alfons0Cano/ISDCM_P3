@@ -1,0 +1,79 @@
+/* Navbar Styles - Unified for all pages */
+.navbar {
+    background-color: #181818 !important;
+    border-bottom: 1px solid #333;
+    padding: 0;
+    height: 56px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    padding: 18px 14px;
+    margin: 0;
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.navbar .nav-link {
+    color: #f1f1f1 !important;
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.navbar .nav-link:hover {
+    background-color: #333;
+    color: #3ea6ff !important;
+}
+
+.navbar .nav-link.active {
+    color: #3ea6ff !important;
+    background-color: rgba(62, 166, 255, 0.1);
+}
+
+.navbar .nav-link i {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.navbar .dropdown-menu {
+    background-color: #282828;
+    border: 1px solid #383838;
+    margin-top: 8px;
+    border-radius: 12px;
+    padding: 8px 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.navbar .dropdown-item {
+    color: #f1f1f1 !important;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #373737;
+    color: #3ea6ff !important;
+}
+
+.navbar .dropdown-item i {
+    margin-right: 8px;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0 16px;
+    height: 56px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}

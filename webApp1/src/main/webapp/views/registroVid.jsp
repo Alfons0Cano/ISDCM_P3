@@ -14,30 +14,18 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/registroVid.css">
     </head>
     <body class="form-page">
         <jsp:include page="/partials/navbar.jsp" />
         
         <div class="container mt-4">
-            <!-- Page header -->
-            <div class="page-header mb-4 d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-film me-3" style="font-size: 2rem; color: #3a7bd5;"></i>
-                    <h3 class="mb-0">Registro de Video</h3>
-                </div>
-                <div>
-                    <a href="${pageContext.request.contextPath}/videos/lista" class="btn btn-outline-primary">
-                        <i class="bi bi-arrow-left me-1"></i> Volver al listado
-                    </a>
-                </div>
-            </div>
-            
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
                     <div class="card shadow form-card">
                         <div class="card-header text-center">
-                            <h3>Nuevo Video</h3>
+                            <h3>NUEVO VIDEO</h3>
                             <p class="text-muted small mb-0 mt-1">Complete el formulario para subir un nuevo video</p>
                         </div>
                         <div class="card-body">
@@ -64,19 +52,17 @@
                                     <div class="mb-3">
                                         <label for="titulo" class="form-label fw-semibold">Título <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-icon"><i class="bi bi-type"></i></span>
                                             <input type="text" class="form-control" id="titulo" name="titulo" required 
                                                    placeholder="Ingrese el título del video">
                                         </div>
-                                        <div class="form-text">El título debe ser único entre tus videos</div>
+                                        <div class="form-text text-muted">El título debe ser único entre tus videos</div>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label for="descripcion" class="form-label fw-semibold">Descripción</label>
                                         <div class="position-relative">
-                                            <span class="input-icon-static"><i class="bi bi-card-text"></i></span>
                                             <textarea class="form-control" id="descripcion" name="descripcion" rows="3" 
-                                                      style="padding-left: 3rem;" placeholder="Ingrese una descripción (opcional)"></textarea>
+                                                      placeholder="Ingrese una descripción (opcional)"></textarea>
                                         </div>
                                     </div>
                                 </div>
