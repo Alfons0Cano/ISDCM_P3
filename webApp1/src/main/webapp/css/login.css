@@ -1,69 +1,85 @@
-/* Login-specific animations */
-/* Override styles.css animations to prevent conflicts */
+/* Estilos específicos para la página de login */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+}
+
 .login-container {
-    opacity: 0;
-    visibility: hidden;
-    /* Remove any animation properties, just use transition */
-    transition: opacity 0.8s ease-in;
-    animation: none !important;
-}
-
-.intro-logo {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.intro-logo i {
-    font-size: 8rem;
-    color: white;
-    background: linear-gradient(45deg, #3a7bd5, #00d2ff);
-    border-radius: 50%;
-    padding: 25px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-}
-
-/* Animation classes */
-.intro-logo.animated {
-    top: 15%;
-    transform: translate(-50%, -50%) scale(0.5);
-}
-
-.login-container.animated {
+    display: block;
     opacity: 1;
     visibility: visible;
 }
 
-/* Override all card animations to prevent flickering */
+/* Ocultar completamente el logo */
+.intro-logo {
+    display: none !important;
+}
+
+/* Hacer visible la tarjeta con colores más claros */
 .login-page .card {
+    display: block;
     opacity: 1;
-    transform: none;
-    animation: none !important;
+    visibility: visible;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
 }
 
-/* Override footer animations */
+.login-page .card-header {
+    background-color: #222;
+    border-bottom: 1px solid #444;
+}
+
+.login-page .card-body {
+    background-color: #2a2a2a;
+}
+
+/* Mejorar visibilidad de los campos de formulario */
+.login-page .form-control {
+    background-color: #383838;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.login-page .form-control:focus {
+    background-color: #404040;
+    border-color: #3ea6ff;
+    box-shadow: 0 0 0 2px rgba(62, 166, 255, 0.3);
+}
+
+.login-page .input-icon {
+    color: #aaa;
+}
+
+.login-page .form-label {
+    color: #ddd;
+}
+
+/* Ajuste para el dropdown del navbar */
+.navbar-nav .dropdown-menu {
+    background-color: #282828;
+    border: 1px solid #373737;
+}
+
+.navbar-nav .dropdown-item {
+    color: #f1f1f1 !important;
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #373737;
+    color: #ffffff !important;
+}
+
+.navbar-nav .dropdown-item i {
+    margin-right: 8px;
+}
+
+/* Asegurarse que los demás elementos no interfieren */
 .login-page .footer {
-    opacity: 1;
-    transform: none; 
-    animation: none !important;
-    transition: opacity 0.8s ease;
-}
-
-/* Hide the static logo when we're using the animated intro logo */
-.login-page .logo {
-    display: none;
-}
-
-/* We keep these keyframes for reference but they're not being used */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    margin-top: 15px;
+    color: #aaa;
 }

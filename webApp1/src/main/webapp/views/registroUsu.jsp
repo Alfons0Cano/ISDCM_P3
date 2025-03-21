@@ -14,21 +14,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-        <style>
-            /* Override any animation classes for registro page */
-            .container {
-                opacity: 1;
-                visibility: visible;
-            }
-        </style>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
     </head>
-    <body>
-        <div class="container">
+    <body class="login-page">
+        <div class="container login-container">
             <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="logo">
-                        <i class="bi bi-person-plus-fill"></i>
-                    </div>
+                <div class="col-md-5">
                     <div class="card">
                         <div class="card-header text-center">
                             <h3>REGISTRO DE USUARIO</h3>
@@ -44,19 +35,16 @@
                             <% } %>
                             
                             <form action="${pageContext.request.contextPath}/usuarios/registro" method="post">
-                                <!-- Form content remains unchanged -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="nombre" class="form-label">Nombre</label>
                                         <div class="input-group">
-                                            <span class="input-icon"><i class="bi bi-person-fill"></i></span>
                                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Su nombre" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="apellidos" class="form-label">Apellidos</label>
                                         <div class="input-group">
-                                            <span class="input-icon"><i class="bi bi-person-badge-fill"></i></span>
                                             <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Sus apellidos" required>
                                         </div>
                                     </div>
@@ -65,7 +53,6 @@
                                 <div class="mb-3">
                                     <label for="mail" class="form-label">Correo electrónico</label>
                                     <div class="input-group">
-                                        <span class="input-icon"><i class="bi bi-envelope-fill"></i></span>
                                         <input type="email" class="form-control" id="mail" name="mail" placeholder="ejemplo@correo.com" required>
                                     </div>
                                 </div>
@@ -73,7 +60,6 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Nombre de usuario</label>
                                     <div class="input-group">
-                                        <span class="input-icon"><i class="bi bi-at"></i></span>
                                         <input type="text" class="form-control" id="username" name="username" placeholder="Elija un nombre de usuario" required>
                                     </div>
                                 </div>
@@ -81,7 +67,6 @@
                                 <div class="mb-4">
                                     <label for="password" class="form-label">Contraseña</label>
                                     <div class="input-group">
-                                        <span class="input-icon"><i class="bi bi-lock-fill"></i></span>
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Elija una contraseña segura" required>
                                     </div>
                                 </div>
@@ -98,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center mt-3 text-white">
+                    <div class="footer">
                         <small>&copy; 2025 VideoWeb. Todos los derechos reservados.</small>
                     </div>
                 </div>

@@ -3,7 +3,6 @@
     Created on : Feb 27, 2025
     Author     : isdcm
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,11 +16,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
     </head>
     <body class="login-page">
-        <!-- Intro logo that will animate -->
-        <div class="intro-logo">
-            <i class="bi bi-play-circle-fill"></i>
-        </div>
-        
         <div class="container login-container">
             <div class="row justify-content-center">
                 <div class="col-md-5">
@@ -49,14 +43,12 @@
                                 <div class="mb-4">
                                     <label for="username" class="form-label">Nombre de usuario</label>
                                     <div class="input-group">
-                                        <span class="input-icon"><i class="bi bi-person-fill"></i></span>
                                         <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario" required>
                                     </div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="password" class="form-label">Contraseña</label>
                                     <div class="input-group">
-                                        <span class="input-icon"><i class="bi bi-lock-fill"></i></span>
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña" required>
                                     </div>
                                 </div>
@@ -79,20 +71,5 @@
         </div>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Animation sequence
-            document.addEventListener('DOMContentLoaded', function() {
-                // Wait a moment before starting the animation
-                setTimeout(function() {
-                    // Move the logo to the top
-                    document.querySelector('.intro-logo').classList.add('animated');
-                    
-                    // After the logo moves up, show the login form
-                    setTimeout(function() {
-                        document.querySelector('.login-container').classList.add('animated');
-                    }, 600);
-                }, 800);
-            });
-        </script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 body.dashboard {
     font-family: 'Roboto', sans-serif;
-    background-color: #0f0f0f;
+    background-color: #181818;
     color: #fff;
     line-height: 1.4;
 }
@@ -35,7 +35,7 @@ body.dashboard {
     position: relative;
     width: 100%;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background: #1f1f1f;
+    background: #2a2a2a;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 10px;
@@ -130,25 +130,25 @@ body.dashboard {
 
 /* Filter Section - YouTube style */
 .filter-section {
-    background: #0f0f0f;
+    background: #181818;
     border-radius: 0;
     padding: 16px;
     margin-bottom: 0;
-    border-bottom: 1px solid #272727;
+    border-bottom: 1px solid #303030;
     position: sticky;
     top: 56px;
     z-index: 900;
 }
 
 .filter-section .form-control {
-    background-color: #121212;
-    border-color: #303030;
+    background-color: #212121;
+    border-color: #383838;
     color: #fff;
     border-radius: 20px 0 0 20px;
 }
 
 .filter-section .form-control:focus {
-    background-color: #1f1f1f;
+    background-color: #252525;
     border-color: #3ea6ff;
     color: #fff;
     box-shadow: none;
@@ -156,13 +156,13 @@ body.dashboard {
 
 .filter-section .btn-primary {
     border-radius: 0 20px 20px 0;
-    background-color: #272727;
-    border-color: #303030;
+    background-color: #333333;
+    border-color: #383838;
 }
 
 .filter-section .input-group-text {
-    background-color: #121212;
-    border-color: #303030;
+    background-color: #212121;
+    border-color: #383838;
     color: #aaa;
 }
 
@@ -172,8 +172,8 @@ body.dashboard {
     overflow-x: auto;
     gap: 8px;
     padding: 12px 0;
-    border-bottom: 1px solid #272727;
-    background-color: #0f0f0f;
+    border-bottom: 1px solid #303030;
+    background-color: #181818;
     scrollbar-width: none; /* Firefox */
 }
 
@@ -182,7 +182,7 @@ body.dashboard {
 }
 
 .filter-chip {
-    background-color: #272727;
+    background-color: #333333;
     color: #fff;
     border: none;
     border-radius: 16px;
@@ -195,16 +195,16 @@ body.dashboard {
 
 .filter-chip:hover, .filter-chip.active {
     background-color: #fff;
-    color: #0f0f0f;
+    color: #181818;
 }
 
 /* Header and Navigation */
 .page-header {
-    background-color: #0f0f0f;
+    background-color: #181818;
     padding: 16px 24px;
     border-radius: 0;
     box-shadow: none;
-    border-bottom: 1px solid #272727;
+    border-bottom: 1px solid #303030;
     position: sticky;
     top: 56px; /* Height of navbar */
     z-index: 1000;
@@ -238,7 +238,7 @@ body.dashboard {
 .action-buttons .btn-primary {
     background-color: #3ea6ff;
     border-color: #3ea6ff;
-    color: #0f0f0f;
+    color: #181818;
 }
 
 .action-buttons .btn-primary:hover {
@@ -247,7 +247,7 @@ body.dashboard {
 }
 
 .badge-count {
-    background: #272727;
+    background: #333333;
     font-size: 12px;
     padding: 2px 6px;
     border-radius: 12px;
@@ -257,8 +257,8 @@ body.dashboard {
 
 /* Empty state styling - YouTube style */
 .alert {
-    background-color: #212121;
-    border: 1px solid #303030;
+    background-color: #252525;
+    border: 1px solid #383838;
     color: #fff;
     text-align: center;
     border-radius: 10px;

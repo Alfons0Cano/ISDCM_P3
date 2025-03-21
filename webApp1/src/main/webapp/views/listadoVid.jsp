@@ -23,47 +23,6 @@
         <jsp:include page="/partials/navbar.jsp" />
         
         <div class="container-fluid px-4">
-            <!-- Page header with title and action buttons -->
-            <div class="page-header d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <h2>
-                        <i class="bi bi-collection-play me-2"></i>
-                        ${misVideos ? 'Mis Videos' : 'Explorar'}
-                        <c:if test="${not empty videos}">
-                            <span class="badge-count">${videos.size()}</span>
-                        </c:if>
-                    </h2>
-                </div>
-                <div class="action-buttons">
-                    <c:if test="${!misVideos}">
-                        <a href="${pageContext.request.contextPath}/videos/mis-videos" class="btn btn-outline-primary">
-                            <i class="bi bi-person-video me-2"></i>Mis videos
-                        </a>
-                    </c:if>
-                    <c:if test="${misVideos}">
-                        <a href="${pageContext.request.contextPath}/videos/lista" class="btn btn-outline-primary">
-                            <i class="bi bi-collection-play me-2"></i>Explorar
-                        </a>
-                    </c:if>
-                    <a href="${pageContext.request.contextPath}/videos/registro" class="btn btn-primary ms-2">
-                        <i class="bi bi-plus-circle me-2"></i>Subir video
-                    </a>
-                </div>
-            </div>
-
-            <!-- YouTube-like filter chips -->
-            <div class="filter-chips">
-                <button class="filter-chip active">Todos</button>
-                <button class="filter-chip">Música</button>
-                <button class="filter-chip">Gaming</button>
-                <button class="filter-chip">Deportes</button>
-                <button class="filter-chip">Películas</button>
-                <button class="filter-chip">Educación</button>
-                <button class="filter-chip">Viajes</button>
-                <button class="filter-chip">Tecnología</button>
-                <button class="filter-chip">Cocina</button>
-            </div>
-
             <!-- Filter section -->
             <div class="filter-section">
                 <form action="${pageContext.request.contextPath}/videos/lista" method="get" class="row g-3">
