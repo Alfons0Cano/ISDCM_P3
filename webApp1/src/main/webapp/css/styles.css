@@ -1,6 +1,12 @@
 body {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    background-color: #0f0f0f;
     min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+/* Estilo específico para páginas con autenticación (login/registro) */
+body.auth-page {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -11,15 +17,17 @@ body {
 }
 
 .card {
-    border: none;
-    border-radius: 15px;
+    background-color: #212121;
+    border: 1px solid #303030;
+    border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
 .card-header {
-    background: linear-gradient(45deg, #3a7bd5, #00d2ff);
-    border-bottom: none;
+    background-color: #181818;
+    border-bottom: 1px solid #303030;
+    color: #fff;
     padding: 1.5rem;
 }
 
@@ -34,19 +42,21 @@ body {
     padding: 2rem;
 }
 
+/* Dark theme form elements */
 .form-control {
     border-radius: 10px;
-    padding: 0.8rem 1rem 0.8rem 3rem;
-    border: 1px solid #e1e5eb;
-    background-color: #f9fafc;
+    padding: 0.8rem 1rem;
+    border: 1px solid #303030;
+    background-color: #121212;
+    color: #fff;
     height: auto;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    box-shadow: 0 0 0 4px rgba(58, 123, 213, 0.15);
-    border-color: #3a7bd5;
-    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(62, 166, 255, 0.3);
+    border-color: #3ea6ff;
+    background-color: #1f1f1f;
 }
 
 .form-label {
@@ -69,19 +79,31 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, #3a7bd5, #00d2ff);
+    background-color: #3ea6ff;
     border: none;
-    border-radius: 10px;
-    padding: 0.8rem;
+    color: #0f0f0f;
     font-weight: 500;
-    letter-spacing: 1px;
+    border-radius: 18px;
+    padding: 8px 16px;
     box-shadow: 0 5px 15px rgba(58, 123, 213, 0.3);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    box-shadow: 0 8px 20px rgba(58, 123, 213, 0.5);
-    transform: translateY(-2px);
+    background-color: #65b5ff;
+}
+
+.btn-outline-primary {
+    color: #3ea6ff;
+    border-color: #3ea6ff;
+    background-color: transparent;
+    border-radius: 18px;
+    padding: 8px 16px;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(62, 166, 255, 0.1);
+    color: #3ea6ff;
 }
 
 .logo {
@@ -111,20 +133,24 @@ body {
     text-decoration: underline;
 }
 
+/* Alert styles for dark theme */
 .alert {
-    border-radius: 10px;
-    border-left: 4px solid;
-    padding: 1rem;
+    border-radius: 8px;
+    background-color: #212121;
+    border: 1px solid #303030;
+    color: #fff;
 }
 
 .alert-danger {
-    border-left-color: #dc3545;
     background-color: rgba(220, 53, 69, 0.1);
+    border-color: #dc3545;
+    color: #dc3545;
 }
 
 .alert-success {
-    border-left-color: #28a745;
     background-color: rgba(40, 167, 69, 0.1);
+    border-color: #28a745;
+    color: #28a745;
 }
 
 .footer, .text-center.mt-3.text-white {
@@ -203,4 +229,120 @@ body {
     font-size: 0.8rem;
     color: #95a5a6;
     margin-top: 0.5rem;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #0f0f0f !important;
+    border-bottom: 1px solid #272727;
+    padding: 0;
+    height: 56px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    padding: 18px 14px;
+    margin: 0;
+}
+
+.navbar .nav-link {
+    color: #f1f1f1 !important;
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.navbar .nav-link:hover {
+    background-color: #272727;
+}
+
+.navbar .nav-link i {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.navbar .dropdown-menu {
+    background-color: #282828;
+    border: 1px solid #373737;
+    margin-top: 8px;
+    border-radius: 12px;
+    padding: 8px 0;
+}
+
+.navbar .dropdown-item {
+    color: #f1f1f1;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #373737;
+}
+
+.navbar .dropdown-item i {
+    margin-right: 8px;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0 16px;
+    height: 56px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Dashboard body style */
+body.dashboard {
+    padding-top: 56px; /* Altura del navbar */
+}
+
+/* Links in dark theme */
+a {
+    color: #3ea6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #65b5ff;
+    text-decoration: none;
+}
+
+/* Table styles for dark theme */
+.table {
+    color: #fff;
+}
+
+.table th {
+    border-bottom: 1px solid #303030;
+}
+
+.table td {
+    border-color: #303030;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #272727;
+}
+
+/* Input group addons */
+.input-group-text {
+    background-color: #212121;
+    border-color: #303030;
+    color: #fff;
+}
+
+/* Placeholder text color */
+::placeholder {
+    color: #666 !important;
+    opacity: 1;
 }

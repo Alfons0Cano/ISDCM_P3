@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,7 @@
     <body class="dashboard">
         <jsp:include page="/partials/navbar.jsp" />
         
-        <div class="container mt-4">
+        <div class="container-fluid px-4">
             <!-- Page header with title and action buttons -->
             <div class="page-header d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -50,34 +51,41 @@
                 </div>
             </div>
 
+            <!-- YouTube-like filter chips -->
+            <div class="filter-chips">
+                <button class="filter-chip active">Todos</button>
+                <button class="filter-chip">Música</button>
+                <button class="filter-chip">Gaming</button>
+                <button class="filter-chip">Deportes</button>
+                <button class="filter-chip">Películas</button>
+                <button class="filter-chip">Educación</button>
+                <button class="filter-chip">Viajes</button>
+                <button class="filter-chip">Tecnología</button>
+                <button class="filter-chip">Cocina</button>
+            </div>
+
             <!-- Filter section -->
             <div class="filter-section">
                 <form action="${pageContext.request.contextPath}/videos/lista" method="get" class="row g-3">
-                    <div class="col-md-4">
-                        <label for="titulo" class="form-label">Título</label>
+                    <div class="col-md-5 col-lg-6">
                         <div class="input-group">
-                            <span class="input-group-text bg-dark border-0"><i class="bi bi-search text-light"></i></span>
                             <input type="text" class="form-control" id="titulo" name="titulo" value="${param.titulo}" placeholder="Buscar por título...">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="autor" class="form-label">Autor</label>
+                    <div class="col-md-3 col-lg-3">
                         <div class="input-group">
-                            <span class="input-group-text bg-dark border-0"><i class="bi bi-person text-light"></i></span>
-                            <input type="text" class="form-control" id="autor" name="autor" value="${param.autor}" placeholder="Buscar por autor...">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control" id="autor" name="autor" value="${param.autor}" placeholder="Autor">
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="fecha" class="form-label">Fecha</label>
+                    <div class="col-md-3 col-lg-3">
                         <div class="input-group">
-                            <span class="input-group-text bg-dark border-0"><i class="bi bi-calendar text-light"></i></span>
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                             <input type="date" class="form-control" id="fecha" name="fecha" value="${param.fecha}">
                         </div>
-                    </div>
-                    <div class="col-md-1 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-search"></i>
-                        </button>
                     </div>
                 </form>
             </div>
@@ -85,7 +93,7 @@
             <!-- Video grid -->
             <c:choose>
                 <c:when test="${empty videos}">
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert" role="alert">
                         <i class="bi bi-camera-reels" style="font-size: 2rem; display: block; margin-bottom: 1rem;"></i>
                         <h4>No hay videos disponibles</h4>
                         <p class="mb-0">¿Por qué no empiezas <a href="${pageContext.request.contextPath}/videos/registro" class="alert-link">subiendo un video</a>?</p>
@@ -94,18 +102,27 @@
                 <c:otherwise>
                     <div class="video-grid">
                         <c:forEach items="${videos}" var="video">
-                            <a href="${pageContext.request.contextPath}/videos/play/${video.id}" class="text-decoration-none">
+                            <a href="${pageContext.request.contextPath}/videos/play/${video.id}" class="video-card-link">
                                 <div class="video-card">
                                     <div class="video-thumbnail">
-                                        <i class="bi bi-play-circle"></i>
+                                        <div class="thumbnail-placeholder">
+                                            <i class="bi bi-play-circle-fill"></i>
+                                        </div>
+                                        <span class="video-duration">${video.duracion}</span>
                                     </div>
                                     <div class="video-info">
-                                        <h3 class="video-title">${video.titulo}</h3>
-                                        <div class="video-author">${video.autor}</div>
-                                        <div class="video-metadata">
-                                            <span><i class="bi bi-eye me-1"></i>${video.reproducciones}</span>
-                                            <span><i class="bi bi-clock me-1"></i>${video.duracion}</span>
-                                            <span><i class="bi bi-calendar me-1"></i>${video.fechaCreacion}</span>
+                                        <div class="channel-avatar">
+                                            ${fn:substring(video.autor, 0, 1).toUpperCase()}
+                                        </div>
+                                        <div class="video-info-text">
+                                            <h3 class="video-title">${video.titulo}</h3>
+                                            <div class="video-details">
+                                                <span class="video-author">${video.autor}</span>
+                                                <div class="video-stats">
+                                                    <span class="video-views">${video.reproducciones} visualizaciones</span>
+                                                    <span class="video-date">${video.fechaCreacion}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -117,5 +134,19 @@
         </div>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            // Add event listeners to filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    // Remove active class from all chips
+                    document.querySelectorAll('.filter-chip').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    // Add active class to clicked chip
+                    this.classList.add('active');
+                    // Aquí se podría implementar el filtrado real
+                });
+            });
+        </script>
     </body>
 </html>
