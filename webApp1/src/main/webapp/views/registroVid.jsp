@@ -11,8 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Registro de Video - VideoWeb</title>
+        <!-- Vendor Stylesheets -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <!-- Application Stylesheets -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/registroVid.css">
@@ -73,9 +77,8 @@
                                     <div class="mb-4">
                                         <div class="file-upload-container">
                                             <div class="file-upload-area" id="drop-area">
-                                                <input type="file" class="form-control" id="videoFile" name="videoFile" 
-                                                    accept="video/mp4,video/avi,video/mkv,video/mov,video/wmv" required
-                                                    style="display: none;">
+                                                <input type="file" class="form-control hidden" id="videoFile" name="videoFile" 
+                                                    accept="video/mp4,video/avi,video/mkv,video/mov,video/wmv" required>
                                                 
                                                 <div class="text-center p-4 upload-prompt">
                                                     <i class="bi bi-cloud-arrow-up display-4 text-primary mb-3"></i>
@@ -87,11 +90,11 @@
                                                     <p class="mt-2 small text-muted">Formatos soportados: MP4, AVI, MKV, MOV, WMV</p>
                                                 </div>
                                                 
-                                                <div class="file-info-container" style="display: none;">
+                                                <div class="file-info-container hidden">
                                                     <div class="card bg-light">
                                                         <div class="card-body">
                                                             <div class="d-flex align-items-center">
-                                                                <i class="bi bi-file-earmark-play me-3 text-primary" style="font-size: 2rem;"></i>
+                                                                <i class="bi bi-file-earmark-play me-3 text-primary icon-2x"></i>
                                                                 <div class="flex-grow-1">
                                                                     <h6 class="mb-1 filename-text"></h6>
                                                                     <div class="small text-muted filesize-text"></div>
@@ -109,8 +112,8 @@
                                     
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <div class="progress" style="display: none;" id="uploadProgress">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                                            <div class="progress hidden" id="uploadProgress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -325,63 +328,5 @@
                 });
             });
         </script>
-        
-        <style>
-            .file-upload-area {
-                border: 2px dashed #adb5bd;
-                border-radius: 10px;
-                transition: all 0.3s ease;
-                position: relative;
-                min-height: 200px;
-                background-color: #f9fafc;
-            }
-            
-            .file-upload-area.highlight {
-                border-color: #3a7bd5;
-                background-color: rgba(58, 123, 213, 0.1);
-            }
-            
-            .file-upload-area .upload-prompt {
-                padding: 40px 20px;
-            }
-            
-            .file-info-container {
-                padding: 10px;
-            }
-            
-            #drop-area {
-                cursor: pointer;
-            }
-            
-            .progress {
-                height: 10px;
-                margin-top: 15px;
-                border-radius: 5px;
-                overflow: hidden;
-            }
-            
-            .form-section {
-                position: relative;
-                margin-bottom: 2rem;
-                padding-bottom: 1.5rem;
-                border-bottom: 1px solid rgba(0,0,0,0.05);
-            }
-            
-            .form-section:last-child {
-                border-bottom: none;
-            }
-            
-            .card.shadow {
-                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
-            }
-            
-            .form-control:focus {
-                box-shadow: 0 0 0 0.25rem rgba(58, 123, 213, 0.25);
-            }
-            
-            .btn-submit {
-                transition: all 0.3s ease;
-            }
-        </style>
     </body>
 </html>
