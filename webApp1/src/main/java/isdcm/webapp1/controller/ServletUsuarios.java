@@ -124,6 +124,13 @@ public class ServletUsuarios extends HttpServlet {
             request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
             return;
         }
+
+        // Check if mail already exists
+        if (usuarioDAO.checkMailExists(mail)) {
+            request.setAttribute("error", "El mail del usuario ya existe");
+            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
+            return;
+        }
         
         // Check if username already exists
         if (usuarioDAO.checkUsernameExists(username)) {

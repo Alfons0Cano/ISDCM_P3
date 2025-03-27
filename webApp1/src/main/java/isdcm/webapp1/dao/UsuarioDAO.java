@@ -151,6 +151,24 @@ public class UsuarioDAO {
         return false;
     }
     
+    public boolean checkMailExists(String mail) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Usuarios WHERE Mail = ?";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, mail);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
     private Usuario extractUsuarioFromResultSet(ResultSet rs) throws SQLException {
         return new Usuario(
             rs.getInt("ID"),
