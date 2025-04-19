@@ -58,25 +58,6 @@
                             </div>
                         </div>
                         
-                        <!-- Like and Share buttons -->
-                        <div class="video-actions">
-                            <button class="action-button">
-                                <i class="bi bi-hand-thumbs-up"></i> Me gusta
-                            </button>
-                            <button class="action-button">
-                                <i class="bi bi-hand-thumbs-down"></i> No me gusta
-                            </button>
-                            <button class="action-button">
-                                <i class="bi bi-share"></i> Compartir
-                            </button>
-                            <button class="action-button">
-                                <i class="bi bi-download"></i> Descargar
-                            </button>
-                            <button class="action-button">
-                                <i class="bi bi-three-dots"></i>
-                            </button>
-                        </div>
-                        
                         <!-- Author Information -->
                         <div class="video-author">
                             <div class="author-avatar">
@@ -84,9 +65,7 @@
                             </div>
                             <div class="author-info">
                                 <div class="author-name">${video.autor}</div>
-                                <div class="subscribers">1.2K suscriptores</div>
                             </div>
-                            <button class="subscribe-button">Suscribirse</button>
                         </div>
                         
                         <!-- Video Description -->
@@ -105,26 +84,6 @@
                                     <span>${video.fechaCreacion}</span>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Comments Section -->
-                        <div class="comments-section">
-                            <div class="comments-header">
-                                <div class="comments-count">124 comentarios</div>
-                                <div class="sort-dropdown">
-                                    <i class="bi bi-filter"></i>
-                                    <span>Ordenar por</span>
-                                </div>
-                            </div>
-                            
-                            <div class="comment-form">
-                                <div class="user-avatar">
-                                    <i class="bi bi-person-fill"></i>
-                                </div>
-                                <input type="text" class="comment-input" placeholder="Añadir un comentario...">
-                            </div>
-                            
-                            <!-- Sample comments would go here -->
                         </div>
                         
                         <a href="${pageContext.request.contextPath}/videos/lista" class="back-button">
