@@ -71,6 +71,7 @@ public class ServletListadoVid extends HttpServlet {
         
         // Set as request attribute
         request.setAttribute("videos", videos);
+        request.setAttribute("misVideos", Boolean.FALSE);
         
         // Forward to JSP
         request.getRequestDispatcher("/views/listadoVid.jsp").forward(request, response);
@@ -87,7 +88,7 @@ public class ServletListadoVid extends HttpServlet {
         
         // Set as request attribute
         request.setAttribute("videos", videos);
-        request.setAttribute("misVideos", true);
+        request.setAttribute("misVideos", Boolean.TRUE);
         
         // Forward to JSP
         request.getRequestDispatcher("/views/listadoVid.jsp").forward(request, response);
