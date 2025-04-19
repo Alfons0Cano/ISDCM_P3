@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.stream.Collectors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,13 +19,15 @@ import java.util.logging.Logger;
 
 @WebServlet(
     name = "ServletREST",
-    urlPatterns = "/rest/search",
+    urlPatterns = {"/rest/search", "/rest/play/*"},
     loadOnStartup = 1
 )
 public class ServletREST extends HttpServlet {
     
     private static final Logger LOGGER = Logger.getLogger(ServletREST.class.getName());
     private static final long serialVersionUID = 1L;
+    private static final String BASE_URL = "http://localhost:20338/webApp2/resources/rest";
+    private static final int TIMEOUT = 5000;
 
     @Override
     public void init() throws ServletException {
@@ -117,6 +123,62 @@ public class ServletREST extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        try {
+            String pathInfo = request.getPathInfo();
+            if (pathInfo == null || !pathInfo.startsWith("/")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"error\":\"Invalid video ID\"}");
+                return;
+            }
+
+            String videoId = pathInfo.substring(1);
+            String playUrl = BASE_URL + "/play/" + videoId;
+            
+            LOGGER.log(Level.INFO, "Incrementing plays for video: {0}", videoId);
+            
+            HttpURLConnection conn = (HttpURLConnection) new URL(playUrl).openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setConnectTimeout(TIMEOUT);
+            conn.setReadTimeout(TIMEOUT);
+            
+            int responseCode = conn.getResponseCode();
+            LOGGER.log(Level.INFO, "Play increment response code: {0}", responseCode);
+            
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String jsonResponse = in.lines().collect(Collectors.joining());
+                    LOGGER.log(Level.INFO, "Play increment response: {0}", jsonResponse);
+                    response.getWriter().write(jsonResponse);
+                }
+            } else {
+                String errorMessage = "Error al incrementar reproducciones";
+                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    errorMessage = errorReader.lines().collect(Collectors.joining());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al leer el stream de error", e);
+                }
+                
+                LOGGER.log(Level.SEVERE, "Error en la respuesta: {0}", errorMessage);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write(String.format("{\"error\":\"%s\"}", errorMessage));
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error en el servlet", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write(String.format("{\"error\":\"%s\"}", e.getMessage()));
         }
     }
 } 

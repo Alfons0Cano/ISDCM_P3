@@ -9,13 +9,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "ServletListadoVid", urlPatterns = {"/videos/lista", "/videos/play/*", "/videos/mis-videos"})
 public class ServletListadoVid extends HttpServlet {
     
     private final VideoDAO videoDAO = new VideoDAO();
+    private static final Logger LOGGER = Logger.getLogger(ServletListadoVid.class.getName());
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,11 +66,6 @@ public class ServletListadoVid extends HttpServlet {
     private void listVideos(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
-        // Get search parameters
-        String titulo = request.getParameter("titulo");
-        String autor = request.getParameter("autor");
-        String fecha = request.getParameter("fecha");
-        
         // Get all videos (filtering would be added here)
         List<Video> videos = videoDAO.findAll();
         
@@ -102,7 +102,21 @@ public class ServletListadoVid extends HttpServlet {
         
         if (video != null) {
             // Increment reproductions
-            videoDAO.incrementarReproduccion(videoId);
+            //videoDAO.incrementarReproduccion(videoId);
+            try {
+                URL url = new URL("http://localhost:8080/webApp1/rest/play/" + videoId);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Accept", "application/json");
+                
+                int responseCode = conn.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    LOGGER.log(Level.SEVERE, "Error incrementing plays for video {0}. Response code: {1}", 
+                            new Object[]{videoId, responseCode});
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Error incrementing plays for video " + videoId, e);
+            }
             
             // Get all videos for recommendations (excluding current video)
             List<Video> allVideos = videoDAO.findAll();
