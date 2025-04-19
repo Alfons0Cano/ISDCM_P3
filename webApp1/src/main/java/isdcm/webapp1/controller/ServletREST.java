@@ -48,7 +48,7 @@ public class ServletREST extends HttpServlet {
                     new Object[]{titulo, autor, fecha});
             
             // Construir URL del servicio externo
-            StringBuilder urlBuilder = new StringBuilder("http://localhost:20338/webApp2/resources/rest/search?");
+            StringBuilder urlBuilder = new StringBuilder(BASE_URL + "/search?");
             if (titulo != null && !titulo.isEmpty()) {
                 urlBuilder.append("titulo=").append(java.net.URLEncoder.encode(titulo, "UTF-8"));
             }
