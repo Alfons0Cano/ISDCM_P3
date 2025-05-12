@@ -41,11 +41,12 @@
                             <span class="input-group-text"><i class="bi bi-person"></i></span>
                             <input type="text" class="form-control" id="autor" name="autor" value="${param.autor}" placeholder="Autor">
                         </div>
-                    </div>
-                    <div class="col-md-3 col-lg-3">
+                    </div>                    <div class="col-md-3 col-lg-3">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                            <input type="date" class="form-control" id="fecha" name="fecha" value="${param.fecha}">
+                            <input type="text" class="form-control" id="fecha" name="fecha" value="${param.fecha}" placeholder="YYYY o YYYY-MM o YYYY-MM-DD">
+                        </div>                        <div class="form-text small mt-1" style="color: #a3a3a3; font-weight: 500;">
+                            Formatos: año (2025), año-mes (2025-05) o completa (2025-05-12)
                         </div>
                     </div>
                 </form>
