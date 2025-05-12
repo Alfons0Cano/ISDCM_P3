@@ -19,14 +19,14 @@ import java.util.logging.Logger;
 
 @WebServlet(
     name = "ServletREST",
-    urlPatterns = {"/rest/search", "/rest/play/*"},
+    urlPatterns = {"/rest/search", "/rest/play/*", "/rest/videos"},
     loadOnStartup = 1
 )
 public class ServletREST extends HttpServlet {
     
     private static final Logger LOGGER = Logger.getLogger(ServletREST.class.getName());
     private static final long serialVersionUID = 1L;
-    private static final String BASE_URL = "http://localhost:20338/webApp2/resources/rest";
+    private static final String BASE_URL = "http://localhost:42435/webApp2/resources/rest";
     private static final int TIMEOUT = 5000;
 
     @Override
@@ -181,4 +181,77 @@ public class ServletREST extends HttpServlet {
             response.getWriter().write(String.format("{\"error\":\"%s\"}", e.getMessage()));
         }
     }
-} 
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        try {
+            // Leer el cuerpo JSON de la solicitud
+            StringBuilder buffer = new StringBuilder();
+            String line;
+            try (BufferedReader reader = request.getReader()) {
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+            }
+            
+            String videoJsonData = buffer.toString();
+            LOGGER.log(Level.INFO, "Recibida solicitud POST para crear video: {0}", videoJsonData);
+            
+            // Construir URL para el servicio REST de webApp2
+            String createVideoUrl = BASE_URL + "/videos";
+            
+            // Crear conexión HTTP
+            HttpURLConnection conn = (HttpURLConnection) new URL(createVideoUrl).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(TIMEOUT);
+            conn.setReadTimeout(TIMEOUT);
+            
+            // Enviar los datos JSON al servicio REST
+            try (java.io.OutputStream os = conn.getOutputStream()) {
+                byte[] input = videoJsonData.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            
+            // Obtener respuesta
+            int responseCode = conn.getResponseCode();
+            LOGGER.log(Level.INFO, "Código de respuesta del servicio REST para crear video: {0}", responseCode);
+            
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            
+            // Procesar respuesta
+            if (responseCode >= HttpURLConnection.HTTP_OK && responseCode < HttpURLConnection.HTTP_MULT_CHOICE) {
+                // Respuesta exitosa (códigos 200-299)
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String jsonResponse = in.lines().collect(Collectors.joining());
+                    LOGGER.log(Level.INFO, "Video creado correctamente: {0}", jsonResponse);
+                    response.setStatus(responseCode); // Usar el mismo código que devolvió webApp2
+                    response.getWriter().write(jsonResponse);
+                }
+            } else {
+                // Error en la respuesta
+                String errorMessage = "Error al crear el video";
+                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    errorMessage = errorReader.lines().collect(Collectors.joining());
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error al leer el stream de error", e);
+                }
+                
+                LOGGER.log(Level.SEVERE, "Error al crear el video: {0}", errorMessage);
+                response.setStatus(responseCode);
+                response.getWriter().write(String.format("{\"error\":\"%s\"}", errorMessage));
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error en el servlet POST", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write(String.format("{\"error\":\"%s\"}", e.getMessage()));
+        }
+    }
+}

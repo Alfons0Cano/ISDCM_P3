@@ -117,13 +117,12 @@ public class ServletListadoVid extends HttpServlet {
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Error incrementing plays for video " + videoId, e);
             }
-            
-            // Get all videos for recommendations (excluding current video)
+              // Get all videos for recommendations (excluding current video)
             List<Video> allVideos = videoDAO.findAll();
             List<Video> recommendations = allVideos.stream()
                     .filter(v -> v.getId() != videoId)
                     .limit(5)  // Limitamos a 5 recomendaciones
-                    .toList();
+                    .collect(java.util.stream.Collectors.toList());
             
             // Set video and recommendations as request attributes
             request.setAttribute("video", video);

@@ -14,6 +14,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -168,32 +170,89 @@ public class ServletRegistroVid extends HttpServlet {
             int minutes = (durationSeconds % 3600) / 60;
             int seconds = durationSeconds % 60;
             Time duration = Time.valueOf(LocalTime.of(hours, minutes, seconds));
-            
-            // Actualizar la URL del video para que use la ruta relativa correcta
+              // Actualizar la URL del video para que use la ruta relativa correcta
             String videoUrl = request.getContextPath() + "/" + UPLOAD_DIRECTORY + "/" + uniqueFileName;
             
-            // Create new video object
-            Video video = new Video(
-                    titulo,
-                    userId,
-                    creationDate,
-                    duration,
-                    descripcion,
-                    fileExtension,
-                    videoUrl
-            );
+            // Create new video object - asegurando que se use el constructor correcto para todos los campos
+            Video video = new Video();
+            video.setTitulo(titulo);
+            video.setAutorId(userId);
+            video.setAutor(username); // Añadimos explícitamente el nombre de usuario
+            video.setFechaCreacion(creationDate);
+            video.setDuracion(duration);
+            video.setDescripcion(descripcion);
+            video.setFormato(fileExtension);
+            video.setUrl(videoUrl);
+            video.setReproducciones(0);
             
-            // Save to database
-            videoDAO.insert(video);
-            logger.log(Level.INFO, "Video registrado exitosamente: {0} por {1}", new Object[]{titulo, username});
+            // En lugar de guardar directamente en la base de datos, usamos el servicio REST de webApp2
+            try {                // Convertir el objeto Video a JSON manualmente (podríamos usar una biblioteca JSON)
+                // Formatear fecha y duración correctamente
+                java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String fechaCreacionStr = dateFormat.format(video.getFechaCreacion());
+                String duracionStr = video.getDuracion().toString();
+                  // Construimos el JSON exactamente como lo espera webApp2
+                String jsonVideo = String.format(
+                    "{\"titulo\":\"%s\",\"autor\":\"%s\",\"autorId\":%d,\"fechaCreacion\":\"%s\",\"duracion\":\"%s\",\"descripcion\":\"%s\",\"formato\":\"%s\",\"url\":\"%s\",\"reproducciones\":%d}",
+                    video.getTitulo(), 
+                    video.getAutor(), 
+                    video.getAutorId(),
+                    fechaCreacionStr, 
+                    duracionStr, 
+                    video.getDescripcion() != null ? video.getDescripcion().replace("\"", "\\\"") : "", 
+                    video.getFormato(), 
+                    video.getUrl(),
+                    video.getReproducciones()
+                );
+                
+                logger.log(Level.INFO, "Enviando datos del video al servicio REST: {0}", jsonVideo);
+                
+                // Crear conexión HTTP al servlet REST de la misma aplicación
+                String restEndpoint = request.getContextPath() + "/rest/videos";
+                URL url = new URL(request.getScheme(), request.getServerName(), 
+                                 request.getServerPort(), restEndpoint);
+                
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+                
+                // Enviar datos JSON
+                try (java.io.OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonVideo.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+                
+                // Leer respuesta
+                int respCode = conn.getResponseCode();
+                
+                if (respCode >= 200 && respCode < 300) {
+                    // Éxito
+                    logger.log(Level.INFO, "Video registrado exitosamente a través del servicio REST");
+                    request.setAttribute("success", "Video registrado con éxito");
+                } else {
+                    // Error
+                    StringBuilder errorResponse = new StringBuilder();
+                    try (java.io.BufferedReader br = new java.io.BufferedReader(
+                            new java.io.InputStreamReader(conn.getErrorStream(), "utf-8"))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            errorResponse.append(line);
+                        }
+                    }
+                    
+                    logger.log(Level.SEVERE, "Error al registrar video a través del servicio REST: {0}", errorResponse.toString());
+                    request.setAttribute("error", "Error al registrar video: " + errorResponse.toString());
+                }
+                
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error al comunicarse con el servicio REST", e);
+                request.setAttribute("error", "Error al comunicarse con el servicio de videos: " + e.getMessage());
+            }
             
-            request.setAttribute("success", "Video registrado con éxito");
             request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
             
-        } catch (SQLException ex) {
-            logger.log(Level.SEVERE, "Error de base de datos al procesar el video", ex);
-            request.setAttribute("error", "Error de base de datos: " + ex.getMessage());
-            request.getRequestDispatcher("/views/registroVid.jsp").forward(request, response);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error general al procesar el video", ex);
             request.setAttribute("error", "Error al procesar el video: " + ex.getMessage());
