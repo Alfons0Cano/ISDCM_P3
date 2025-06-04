@@ -2,12 +2,12 @@ package isdcm.webapp1.controller;
 
 import isdcm.webapp1.dao.VideoDAO;
 import isdcm.webapp1.model.Video;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -49,7 +49,7 @@ public class ServletListadoVid extends HttpServlet {
             }
         } catch (SQLException ex) {
             request.setAttribute("error", "Error de base de datos: " + ex.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         } catch (NumberFormatException ex) {
             response.sendRedirect(request.getContextPath() + "/videos/lista");
         }

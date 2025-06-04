@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Error - VideoWeb</title>
+        <title>Error - Registro de Usuario</title>
         <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -77,8 +77,7 @@
                         <div class="text-center">
                             <i class="bi bi-exclamation-triangle-fill error-icon"></i>
                             <h1 class="error-header">Ha ocurrido un error</h1>
-                        </div>
-                        <div class="error-message">
+                        </div>                        <div class="error-message">
                             <%
                                 String errorMessage = (String) request.getAttribute("error");
                                 if (errorMessage != null) {
@@ -89,10 +88,15 @@
                                     out.println("Se ha producido un error inesperado.");
                                 }
                             %>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                Solo está disponible la funcionalidad de registro de usuarios.
+                            </div>
                         </div>
                         <div class="text-center">
-                            <a href="${pageContext.request.contextPath}/videos/lista" class="back-button">
-                                <i class="bi bi-arrow-left me-2"></i>Volver a la lista de videos
+                            <a href="${pageContext.request.contextPath}/usuarios/registro" class="back-button">
+                                <i class="bi bi-arrow-left me-2"></i>Ir al registro de usuarios
                             </a>
                         </div>
                     </div>

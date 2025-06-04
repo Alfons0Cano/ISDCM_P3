@@ -2,12 +2,12 @@ package isdcm.webapp1.controller;
 
 import isdcm.webapp1.dao.UsuarioDAO;
 import isdcm.webapp1.model.Usuario;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -58,27 +58,24 @@ public class ServletUsuarios extends HttpServlet {
                 default:
                     response.sendRedirect(request.getContextPath() + "/usuarios");
                     break;
-            }
-        } catch (SQLException ex) {
+            }        } catch (SQLException ex) {
             request.setAttribute("error", "Error de base de datos: " + ex.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
-    }
-    
-    private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
+    }    private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         // Check if already logged in
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("usuario") != null) {
-            response.sendRedirect(request.getContextPath() + "/videos/lista");
+            // Redirigir a la página de registro en lugar de a una que ya no existe
+            session.setAttribute("message", "Ya has iniciado sesión. Solo está disponible el módulo de registro de usuarios.");
+            response.sendRedirect(request.getContextPath() + "/usuarios/registro");
             return;
         }
         
         request.getRequestDispatcher("/views/login.jsp").forward(request, response);
-    }
-    
-    private void login(HttpServletRequest request, HttpServletResponse response)
+    }private void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
         String username = request.getParameter("username");
@@ -91,16 +88,18 @@ public class ServletUsuarios extends HttpServlet {
             session.setAttribute("userId", usuario.getId());
             session.setAttribute("username", usuario.getUsername());
             
-            response.sendRedirect(request.getContextPath() + "/videos/lista");
+            // Mostrar mensaje de éxito en lugar de redirigir a una página que ya no existe
+            session.setAttribute("message", "Inicio de sesión exitoso. Solo está disponible el módulo de registro de usuarios.");
+            response.sendRedirect(request.getContextPath() + "/usuarios/registro");
         } else {
             request.setAttribute("error", "Usuario o contraseña incorrectos");
             request.getRequestDispatcher("/views/login.jsp").forward(request, response);
         }
     }
-    
-    private void showRegistroForm(HttpServletRequest request, HttpServletResponse response)
+      private void showRegistroForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // Si hay un mensaje en la sesión, se recuperará automáticamente en la JSP
         request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
     }
     

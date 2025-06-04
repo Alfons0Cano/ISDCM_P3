@@ -2,6 +2,7 @@
     Document   : registroUsu
     Created on : Feb 27, 2025
     Author     : isdcm
+    Modified   : June 4, 2025 - Updated to reflect that only user registration functionality is available
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Registro de Usuario - VideoWeb</title>
+        <title>Registro de Usuario</title>
         <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -26,12 +27,30 @@
                             <h3>REGISTRO DE USUARIO</h3>
                         </div>
                         <div class="card-body">
-                            <h5 class="text-center mb-4">Crea tu cuenta</h5>
+                            <h5 class="text-center mb-4">Crea tu cuenta</h5>                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                Solo está disponible la funcionalidad de registro de usuarios.
+                            </div>
                             
                             <% if(request.getAttribute("error") != null) { %>
                                 <div class="alert alert-danger">
                                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
                                     <%= request.getAttribute("error") %>
+                                </div>
+                            <% } %>
+                            
+                            <% 
+                               // Verificar si hay mensaje en request o en session
+                               String message = (String)request.getAttribute("message");
+                               if(message == null && session.getAttribute("message") != null) {
+                                   message = (String)session.getAttribute("message");
+                                   session.removeAttribute("message"); // limpiar para no mostrar repetidamente
+                               }
+                               if(message != null) { 
+                            %>
+                                <div class="alert alert-success">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <%= message %>
                                 </div>
                             <% } %>
                             
