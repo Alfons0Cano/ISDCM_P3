@@ -102,8 +102,7 @@ public class ServletUsuarios extends HttpServlet {
         // Si hay un mensaje en la sesión, se recuperará automáticamente en la JSP
         request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
     }
-    
-    private void registro(HttpServletRequest request, HttpServletResponse response)
+      private void registro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
         String nombre = request.getParameter("nombre");
@@ -111,6 +110,14 @@ public class ServletUsuarios extends HttpServlet {
         String mail = request.getParameter("mail");
         String username = request.getParameter("username");
         String pass = request.getParameter("password");
+        
+        // Debug: imprimir parámetros recibidos
+        System.out.println("DEBUG - Parámetros recibidos:");
+        System.out.println("  nombre: " + nombre);
+        System.out.println("  apellidos: " + apellidos);
+        System.out.println("  mail: " + mail);
+        System.out.println("  username: " + username);
+        System.out.println("  password: " + (pass != null ? "[RECIBIDA]" : "[NULL]"));
         
         // Validations
         if (nombre == null || nombre.trim().isEmpty() ||
@@ -124,26 +131,36 @@ public class ServletUsuarios extends HttpServlet {
             return;
         }
 
-        // Check if mail already exists
-        if (usuarioDAO.checkMailExists(mail)) {
-            request.setAttribute("error", "El mail del usuario ya existe");
+        try {
+            // Check if mail already exists
+            if (usuarioDAO.checkMailExists(mail)) {
+                request.setAttribute("error", "El mail del usuario ya existe");
+                request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
+                return;
+            }
+            
+            // Check if username already exists
+            if (usuarioDAO.checkUsernameExists(username)) {
+                request.setAttribute("error", "El nombre de usuario ya existe");
+                request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
+                return;
+            }
+            
+            // Create new user
+            Usuario usuario = new Usuario(nombre, apellidos, mail, username, pass);
+            System.out.println("DEBUG - Intentando insertar usuario: " + username);
+            usuarioDAO.insert(usuario);
+            System.out.println("DEBUG - Usuario insertado exitosamente con ID: " + usuario.getId());
+            
+            request.setAttribute("message", "Usuario registrado con éxito");
+            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            
+        } catch (SQLException e) {
+            System.err.println("ERROR - Error al registrar usuario: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Error al registrar el usuario: " + e.getMessage());
             request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
-            return;
         }
-        
-        // Check if username already exists
-        if (usuarioDAO.checkUsernameExists(username)) {
-            request.setAttribute("error", "El nombre de usuario ya existe");
-            request.getRequestDispatcher("/views/registroUsu.jsp").forward(request, response);
-            return;
-        }
-        
-        // Create new user
-        Usuario usuario = new Usuario(nombre, apellidos, mail, username, pass);
-        usuarioDAO.insert(usuario);
-        
-        request.setAttribute("message", "Usuario registrado con éxito");
-        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
     
     private void logout(HttpServletRequest request, HttpServletResponse response)

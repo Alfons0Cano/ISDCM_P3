@@ -25,6 +25,12 @@
             <artifactId>derbyclient</artifactId>
             <version>10.14.2.0</version>
         </dependency>
+        <!-- Derby embedded driver as backup -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.14.2.0</version>
+        </dependency>
         <!-- Servlet API for multipart processing -->
         <dependency>
             <groupId>javax.servlet</groupId>

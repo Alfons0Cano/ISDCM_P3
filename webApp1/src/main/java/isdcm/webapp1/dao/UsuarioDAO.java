@@ -7,15 +7,41 @@ import java.util.List;
 
 public class UsuarioDAO {
     
-    private Connection getConnection() throws SQLException {
-        // You'll need to adjust these connection parameters based on your setup
-        return DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/pr2", "pr2", "pr2");
+    static {
+        try {
+            // Registrar el driver de Derby explícitamente
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            System.out.println("DEBUG - Driver Derby registrado exitosamente");
+        } catch (ClassNotFoundException e) {
+            System.err.println("ERROR - No se pudo cargar el driver Derby: " + e.getMessage());
+        }
     }
     
-    public void insert(Usuario usuario) throws SQLException {
+      private Connection getConnection() throws SQLException {
+        // You'll need to adjust these connection parameters based on your setup
+        String url = "jdbc:derby://localhost:1527/pr2";
+        String user = "pr2";
+        String password = "pr2";
+        
+        System.out.println("DEBUG - Intentando conectar a: " + url + " con usuario: " + user);
+        
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+            System.out.println("DEBUG - Conexión exitosa");
+            return conn;
+        } catch (SQLException e) {
+            System.err.println("ERROR - Error de conexión: " + e.getMessage());
+            throw e;
+        }
+    }
+      public void insert(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO Usuarios (Nombre, Apellidos, Mail, Username, Pass) " +
                      "VALUES (?, ?, ?, ?, ?)";
+        
+        System.out.println("DEBUG - Ejecutando INSERT con SQL: " + sql);
+        System.out.println("DEBUG - Valores: " + usuario.getNombre() + ", " + 
+                          usuario.getApellidos() + ", " + usuario.getMail() + ", " + 
+                          usuario.getUsername() + ", [PASSWORD]");
         
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -26,14 +52,22 @@ public class UsuarioDAO {
             ps.setString(4, usuario.getUsername());
             ps.setString(5, usuario.getPass());
             
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("DEBUG - Filas afectadas: " + rowsAffected);
             
             // Get generated ID
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    usuario.setId(rs.getInt(1));
+                    int generatedId = rs.getInt(1);
+                    usuario.setId(generatedId);
+                    System.out.println("DEBUG - ID generado: " + generatedId);
+                } else {
+                    System.out.println("DEBUG - No se generó ningún ID");
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("ERROR - Error en insert(): " + e.getMessage());
+            throw e;
         }
     }
     
